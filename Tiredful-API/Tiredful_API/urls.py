@@ -28,6 +28,10 @@ from django.conf.urls import url, include
 from django.contrib.auth.models import User, Group
 
 from rest_framework import permissions, routers, serializers, viewsets
+from rest_framework_swagger.renderers import OpenAPIRenderer
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework import response, schemas
+
 
 
 # first we define the serializers
@@ -40,6 +44,12 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
 
+
+@api_view()
+@renderer_classes([OpenAPIRenderer])
+def schema_view(request):
+    generator = schemas.SchemaGenerator(title='Pastebin API')
+    return response.Response(generator.get_schema(request=request))
 
 urlpatterns = [
     # URL for user login
@@ -72,4 +82,5 @@ urlpatterns = [
     url(r'^api/v1/', include('advertisements.urls', namespace="advertisements-api")),
     url(r'^advertisements/', include('advertisements.urls', namespace="advertisements")),
 
+    url(r'^swagger$', schema_view),
 ]
