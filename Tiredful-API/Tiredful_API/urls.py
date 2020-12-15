@@ -48,7 +48,7 @@ class GroupSerializer(serializers.ModelSerializer):
 @api_view()
 @renderer_classes([OpenAPIRenderer])
 def schema_view(request):
-    generator = schemas.SchemaGenerator(title='Pastebin API')
+    generator = schemas.SchemaGenerator(title='Tiredful API')
     return response.Response(generator.get_schema(request=request))
 
 urlpatterns = [
